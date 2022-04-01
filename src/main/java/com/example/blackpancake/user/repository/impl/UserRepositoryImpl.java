@@ -26,8 +26,10 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Optional<Member> findByEmail(String email) {
-        Member member = em.find(Member.class, email);
-        return Optional.ofNullable(member);
+        List<Member> result = em.createQuery("select m from Member m where m.email = :email", Member.class)
+                                            .setParameter("email", email)
+                                            .getResultList();
+        return result.stream().findAny();
     }
 
     @Override

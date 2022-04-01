@@ -16,6 +16,7 @@ import javax.persistence.Id;
 public class Member {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String email;
     private String first_name;
     private String last_name;
@@ -24,4 +25,13 @@ public class Member {
     private String address;
     private String auth;
 
+    public Member(String email, String first_name, String last_name, String mobile, String pwd, String address, String auth) {
+        this.email = email;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.mobile = mobile;
+        this.pwd = pwd;
+        this.address = address;
+        this.auth = auth;
+    }
 }
