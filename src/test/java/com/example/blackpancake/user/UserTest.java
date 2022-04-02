@@ -1,6 +1,8 @@
 package com.example.blackpancake.user;
 
 import com.example.blackpancake.user.domain.Member;
+import com.example.blackpancake.user.dto.LoginDTO;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.ResultHandler;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,18 +45,40 @@ public class UserTest {
         Member memberDuplicated = createDuplicatedMemberDTO();
 
         //when
-        mockMvc.perform(post("/user")
+        ResultActions actionNormal = mockMvc.perform(post("/user")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(member)))
-                .andExpect(status().isBadRequest());
-        mockMvc.perform(post("/user")
+                .andDo(MockMvcResultHandlers.print());
+        ResultActions actionDuplicated = mockMvc.perform(post("/user")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(memberDuplicated)))
-                .andExpect(status().isBadRequest());
+                .andDo(MockMvcResultHandlers.print());
 
         //then
+        actionNormal.andExpect(status().isCreated());
+        actionDuplicated.andExpect(status().isBadRequest());
+    }
 
+    @Test
+    void 로그인() throws Exception {
+        Member member = createMemberDTO();
+        LoginDTO login = createLoginDTO();
 
+        ResultActions memberCreated = mockMvc.perform(post("/user")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(member)))
+                        .andDo(MockMvcResultHandlers.print());
+        ResultActions loginResult = mockMvc.perform(post("/user/{email}")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(login)))
+                        .andDo(MockMvcResultHandlers.print());
+
+        memberCreated.andExpect(status().isCreated());
+        loginResult.andExpect(status().isOk());
+    }
+
+    private LoginDTO createLoginDTO() {
+        return new LoginDTO("email@email.com", "1");
     }
 
     private Member createMemberDTO(){
@@ -75,9 +100,4 @@ public class UserTest {
                 ,"홈플러스"
                 ,"0");
     }
-
-
-
-
-
 }

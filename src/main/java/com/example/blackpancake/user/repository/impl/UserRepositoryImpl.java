@@ -37,4 +37,9 @@ public class UserRepositoryImpl implements UserRepository {
         List<Member> result = em.createQuery("select m from Member m", Member.class).getResultList();
         return result;
     }
+
+    @Override
+    public Member login(Member member) {
+        return null;
+    }
 }

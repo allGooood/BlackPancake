@@ -11,4 +11,5 @@ public interface UserRepository{
     Member join(Member member);
     Optional<Member> findByEmail(String email);
     List<Member> findAll();
+    //Member login(Member member);
 }

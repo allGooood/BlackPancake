@@ -20,4 +20,10 @@ public class UserServiceImpl implements UserService {
         Member savedUser = userRepository.join(member);
         return savedUser;
     }
+
+//    @Override
+//    public Member retrieveUser(String email) throws Exception {
+//        return null;
+//    }
+
 }

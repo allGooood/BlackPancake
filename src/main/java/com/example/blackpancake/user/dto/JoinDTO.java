@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
-public class JoinForm {
+public class JoinDTO {
     private String email;
     private String first_name;
     private String last_name;

@@ -4,6 +4,7 @@ import com.example.blackpancake.user.domain.Member;
 import com.example.blackpancake.user.repository.UserRepository;
 import com.example.blackpancake.user.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +13,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @Transactional
@@ -37,6 +39,12 @@ public class UserController {
         return ResponseEntity.created(location).body("회원가입이 완료 되었습니다.");
         //return ResponseEntity.status(HttpStatus.OK).body(savedUser);
     }
+
+//    @GetMapping("/user/{email}")
+//    public EntityModel<Optional<Member>> retrieveUser(@PathVariable String emmail){
+//        Optional<Member> member = userService.findByEmail(email);
+//
+//    }
 }
 
 
