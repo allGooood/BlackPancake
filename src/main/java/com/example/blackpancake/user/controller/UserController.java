@@ -1,6 +1,7 @@
 package com.example.blackpancake.user.controller;
 
 import com.example.blackpancake.user.domain.Member;
+import com.example.blackpancake.user.dto.LoginDTO;
 import com.example.blackpancake.user.repository.UserRepository;
 import com.example.blackpancake.user.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,15 +20,7 @@ import java.util.Optional;
 @Transactional
 public class UserController {
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private UserServiceImpl userService;
-
-    @GetMapping("/user")
-    public List<Member> retrieveAllUsers(){
-        return userRepository.findAll();
-    }
 
     @PostMapping("/user")
     public ResponseEntity<String> join(@RequestBody Member member){
@@ -40,8 +33,17 @@ public class UserController {
         //return ResponseEntity.status(HttpStatus.OK).body(savedUser);
     }
 
+    @PostMapping("/auth")
+    public ResponseEntity<String> login(@RequestBody LoginDTO loginDto){
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                                                .path("{email}")
+                                                .buildAndExpand(loginDto.getEmail())
+                                                .toUri();
+        return null;
+    }
+
 //    @GetMapping("/user/{email}")
-//    public EntityModel<Optional<Member>> retrieveUser(@PathVariable String emmail){
+//    public EntityModel<Optional<Member>> retrieveUser(@PathVariable String email){
 //        Optional<Member> member = userService.findByEmail(email);
 //
 //    }
