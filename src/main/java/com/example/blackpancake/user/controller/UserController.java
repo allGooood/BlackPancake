@@ -33,14 +33,6 @@ public class UserController {
         //return ResponseEntity.status(HttpStatus.OK).body(savedUser);
     }
 
-    @PostMapping("/auth")
-    public ResponseEntity<String> login(@RequestBody LoginDTO loginDto){
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                                                .path("{email}")
-                                                .buildAndExpand(loginDto.getEmail())
-                                                .toUri();
-        return null;
-    }
 
 //    @GetMapping("/user/{email}")
 //    public EntityModel<Optional<Member>> retrieveUser(@PathVariable String email){

@@ -26,9 +26,11 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Optional<Member> findByEmail(String email) {
+        System.out.println("Email: " + email);
         List<Member> result = em.createQuery("select m from Member m where m.email = :email", Member.class)
-                                            .setParameter("email", email)
+                                            .setParameter("email", "gina@gmail.com")
                                             .getResultList();
+        System.out.println("EmailResult: " + result.get(0).getEmail());
         return result.stream().findAny();
     }
 

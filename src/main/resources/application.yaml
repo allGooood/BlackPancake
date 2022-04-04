@@ -9,7 +9,10 @@ spring:
     database: mysql
     show-sql: true
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-    hibernate:
-      ddl-auto: create
+#    hibernate:
+#      ddl-auto: create
     generate-ddl: true
     defer-datasource-initialization: true
+
+jwt:
+  secret: U0365K3ES3Q5F64G9O196I111PXA10Q2284E23I34J0SM22ZT8NY3Z7F0MTY03GXP20BVUIAGRGN2UQ728XPL81COD4AYLS1XJ6L4W84D3KH59R31DU0BPX40EQOGP79X7P3BS6F6E138WXCSY1EH8N2S0NZS9Z1AX4J87N9C8HAM710Z7X920U14M3FWW74I99SAONR

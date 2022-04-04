@@ -5,6 +5,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,16 +17,20 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
+import java.security.Key;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
 @Component
 public class JwtTokenProvider {
-    private final long TOKEN_VALID_MILISECOND = 1000L * 60 * 60 * 10; // 10시간
+    private final long TOKEN_VALID_MILISECONDS = 1000L * 60 * 60; // 1시간
 
-    @Value("spring.jwt.secret")
+    @Value("${jwt.secret}")
     private String secretKey;
+    //private final String secretKey = "secretKey-test-authorization-jwt-manage-tokensecretKey-test-authorization-jwt-manage-tokensecretKey-test-authorization-jwt-manage-tokensecretKey-test-authorization-jwt-manage-tokensecretKey-test-authorization-jwt-manage-tokensecretKey-test-authorization-jwt-manage-tokensecretKey-test-authorization-jwt-manage-tokensecretKey-test-authorization-jwt-manage-tokensecretKey-test-authorization-jwt-manage-tokensecretKey-test-authorization-jwt-manage-tokensecretKey-test-authorization-jwt-manage-tokensecretKey-test-authorization-jwt-manage-tokensecretKey-test-authorization-jwt-manage-tokensecretKey-test-authorization-jwt-manage-tokensecretKey-test-authorization-jwt-manage-token";
+    private Key key;
 
     private final UserDetailsService userDetailsService;
 
@@ -34,7 +40,7 @@ public class JwtTokenProvider {
 
     @PostConstruct
     protected void init(){
-        secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
+        key = Keys.hmacShaKeyFor(secretKey.getBytes());
     }
 
     // jwt 반환(정보 포함)
@@ -45,8 +51,9 @@ public class JwtTokenProvider {
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + TOKEN_VALID_MILISECOND))
-                .signWith(SignatureAlgorithm.ES512, secretKey)
+                .setExpiration(new Date(now.getTime() + TOKEN_VALID_MILISECONDS))
+                //.signWith(SignatureAlgorithm.HS256, secretKey)
+                .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
     }
 
