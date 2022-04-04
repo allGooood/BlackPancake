@@ -1,8 +1,8 @@
 package com.example.blackpancake.user.service;
 
 import com.example.blackpancake.user.domain.Member;
+import com.example.blackpancake.user.dto.JoinDTO;
 
 public interface UserService {
-    Member join(Member member) throws Exception;
-    //Member retrieveUser(String email) throws Exception;
+    Member save(Member joinDTO) throws Exception;
 }

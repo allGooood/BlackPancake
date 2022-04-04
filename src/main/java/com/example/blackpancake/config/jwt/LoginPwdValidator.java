@@ -3,7 +3,6 @@ package com.example.blackpancake.config.jwt;
 import com.example.blackpancake.user.domain.Member;
 import com.example.blackpancake.user.dto.LoginDTO;
 import com.example.blackpancake.user.repository.UserRepository;
-import com.example.blackpancake.user.repository.impl.UserRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,8 +15,8 @@ import java.util.Optional;
 @Service
 public class LoginPwdValidator implements UserDetailsService {
     @Autowired
-    //UserRepository userRepository;
-    UserRepositoryImpl userRepository;
+    UserRepository userRepository;
+    //UserRepositoryImpl userRepository;
 
 //    @Bean
 //    public PasswordEncoder passwordEncoder(){
