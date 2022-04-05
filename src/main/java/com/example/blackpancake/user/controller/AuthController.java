@@ -1,6 +1,6 @@
 package com.example.blackpancake.user.controller;
 
-import com.example.blackpancake.config.UserRole;
+import com.example.blackpancake.config.role.UserRole;
 import com.example.blackpancake.config.jwt.JwtTokenProvider;
 import com.example.blackpancake.user.domain.Member;
 import com.example.blackpancake.user.dto.LoginDTO;
@@ -25,6 +25,8 @@ public class AuthController {
     public String auth(@RequestBody LoginDTO loginDto){
         Member member = userRepository.findByEmail(loginDto.getEmail())
                 .orElseThrow(() -> new UserNotFoundException("등록되지 않은 Email 입니다."));
-        return jwtTokenProvider.createToken(member.getEmail(), Collections.singletonList(UserRole.USER));
+        return jwtTokenProvider.createToken(member.getEmail()
+                                            , member.getAuth().equals("0") ? Collections.singletonList(UserRole.ADMIN) : Collections.singletonList(UserRole.MEMBER)); //로그인 시 권한부여
+        //return jwtTokenProvider.createToken(member.getEmail(), Collections.singletonList(UserRole.MEMBER));
     }
 }

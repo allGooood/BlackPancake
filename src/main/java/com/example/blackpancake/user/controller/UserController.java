@@ -1,8 +1,6 @@
 package com.example.blackpancake.user.controller;
 
 import com.example.blackpancake.user.domain.Member;
-import com.example.blackpancake.user.dto.JoinDTO;
-import com.example.blackpancake.user.repository.UserRepository;
 import com.example.blackpancake.user.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
