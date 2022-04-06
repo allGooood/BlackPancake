@@ -25,12 +25,15 @@ public class JwtTokenProvider {
 
     @Value("${jwt.secret}")
     private String secretKey;
-    //private final String secretKey = "secretKey-test-authorization-jwt-manage-tokensecretKey-test-authorization-jwt-manage-tokensecretKey-test-authorization-jwt-manage-tokensecretKey-test-authorization-jwt-manage-tokensecretKey-test-authorization-jwt-manage-tokensecretKey-test-authorization-jwt-manage-tokensecretKey-test-authorization-jwt-manage-tokensecretKey-test-authorization-jwt-manage-tokensecretKey-test-authorization-jwt-manage-tokensecretKey-test-authorization-jwt-manage-tokensecretKey-test-authorization-jwt-manage-tokensecretKey-test-authorization-jwt-manage-tokensecretKey-test-authorization-jwt-manage-tokensecretKey-test-authorization-jwt-manage-tokensecretKey-test-authorization-jwt-manage-token";
     private Key key;
 
-    private final UserDetailsService userDetailsService;
+    //private final UserDetailsService userDetailsService;
+    private final LoginPwdValidator userDetailsService;
 
-    public JwtTokenProvider(UserDetailsService userDetailsService) {
+//    public JwtTokenProvider(UserDetailsService userDetailsService) {
+//        this.userDetailsService = userDetailsService;
+//    }
+    public JwtTokenProvider(LoginPwdValidator userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
 
@@ -48,29 +51,29 @@ public class JwtTokenProvider {
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + TOKEN_VALID_MILISECONDS))
-                //.signWith(SignatureAlgorithm.HS256, secretKey)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
     }
 
-    public Authentication getAuthentication(String token){
+    public Authentication getAuthentication(String token){ //LoginPwdValidator 클래스사용 -> email, pwd, 권한정보 담음(UserDetails 객체)
+        //UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserEmail(token));
         UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserEmail(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
     private String getUserEmail(String token) {
-        return Jwts.parserBuilder().setSigningKey(secretKey).build()
+        return Jwts.parserBuilder().setSigningKey(key).build()
                 .parseClaimsJws(token).getBody().getSubject();
     }
 
-    public String resolveToken(HttpServletRequest request){
+    public String resolveToken(HttpServletRequest request){ //토큰 값 가져오기(헤더의 "X-AUTH-TOKEN" 값)
         return request.getHeader("X-AUTH-TOKEN");
     }
 
-    public boolean validateToken(String jwtToken){
+    public boolean validateToken(String jwtToken){ //토큰의 만료시간 확인
         try{
-            Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(jwtToken);
-            return !claims.getBody().getExpiration().before(new Date());
+            Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwtToken);
+            return !claims.getBody().getExpiration().before(new Date()); //token의 expiration이 만료되지 않았을때
         } catch(Exception e){
             //예외처리 추가
             return false;

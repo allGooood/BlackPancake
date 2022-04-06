@@ -1,14 +1,17 @@
 package com.example.blackpancake.auth;
 
-import com.example.blackpancake.config.jwt.JwtTokenFilter;
+import com.example.blackpancake.config.jwt.JwtTokenProvider;
+import com.example.blackpancake.config.role.UserRole;
 import com.example.blackpancake.user.domain.Member;
 import com.example.blackpancake.user.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.Collections;
+import java.util.Optional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -18,30 +21,50 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AuthControllerTest {
     @Autowired
     MockMvc mockMvc;
-
-    @MockBean
+    @Autowired
     UserRepository userRepository;
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
     @Test
     void 관리자_회원목록_조회() throws Exception {
-        //Member adminDto = createAdminDTO();
+        Optional<Member> admin = createAdminDTO();
+        String token = createToken(admin.get());
 
         mockMvc.perform(get( "/admin/users")
-                        .header("Authorization", "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBlbWFpbC5jb20iLCJyb2xlcyI6WyJBRE" +
-                                "1JTiJdLCJpYXQiOjE2NDkxMzM4ODMsImV4cCI6MTY0OTEzNzQ4M30.Vw7PiCwCrD4QzPjrfN-Sg6wvs9LSBqOSTVp012C2aPfzLlwmRb" +
-                                "JMihUUqAZNoqXm6MBRewarXt_DwncbKHy3Eg"))
+                        .header("X-AUTH-TOKEN", token))
                 .andExpect(status().isOk());
     }
 
-    private Member createAdminDTO(){
-        Member member = new Member("admin@email.com",
-                "리자",
-                "관",
-                "010-2158-8596",
-                "1",
-                "관리자네 집",
-                "0");
-        return member;
+    @Test
+    void 관리자_권한이_없으면_목록조회_실패() throws Exception{
+        Optional<Member> admin = createAdminDTO();
+        Optional<Member> member = createMemberDTO();
+
+        String tokenAdmin = createToken(admin.get());
+        String tokenMember = createToken(member.get());
+
+        mockMvc.perform(get( "/admin/users")
+                        .header("X-AUTH-TOKEN", tokenAdmin))
+                .andExpect(status().isOk());
+        mockMvc.perform(get( "/admin/users")
+                        .header("X-AUTH-TOKEN", tokenMember))
+                .andExpect(status().isForbidden());
+    }
+
+    private Optional<Member> createAdminDTO(){
+        return userRepository.findByEmail("admin@email.com");
+    }
+
+    private Optional<Member> createMemberDTO(){
+        return userRepository.findByEmail("test@email.com");
+    }
+
+    private String createToken(Member userDTO){
+        return jwtTokenProvider.createToken(userDTO.getEmail()
+                , userDTO.getAuth().equals("0")
+                        ? Collections.singletonList(UserRole.ROLE_MEMBER)
+                        : Collections.singletonList(UserRole.ROLE_ADMIN));
     }
 
 }

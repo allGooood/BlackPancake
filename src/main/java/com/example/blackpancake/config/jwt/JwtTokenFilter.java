@@ -23,8 +23,10 @@ public class JwtTokenFilter extends GenericFilterBean {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
-        if(token != null && jwtTokenProvider.validateToken(token)){
+        System.out.println("resolveToken: " + token);
+        if(token != null && jwtTokenProvider.validateToken(token)){ //토큰이 존재하고, 토큰의 기간이 만료되지 않았다면
             Authentication auth = jwtTokenProvider.getAuthentication(token);
+            System.out.println("auth: " + auth.getAuthorities().toString());
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
         chain.doFilter(request, response);
