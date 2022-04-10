@@ -27,12 +27,8 @@ public class JwtTokenProvider {
     private String secretKey;
     private Key key;
 
-    //private final UserDetailsService userDetailsService;
     private final LoginPwdValidator userDetailsService;
 
-//    public JwtTokenProvider(UserDetailsService userDetailsService) {
-//        this.userDetailsService = userDetailsService;
-//    }
     public JwtTokenProvider(LoginPwdValidator userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
@@ -56,7 +52,6 @@ public class JwtTokenProvider {
     }
 
     public Authentication getAuthentication(String token){ //LoginPwdValidator 클래스사용 -> email, pwd, 권한정보 담음(UserDetails 객체)
-        //UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserEmail(token));
         UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserEmail(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }

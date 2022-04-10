@@ -35,7 +35,6 @@ public class LoginPwdValidator implements UserDetailsService {
         Member member = userRepository.findByEmail(email)
                 .orElseThrow(()-> new UsernameNotFoundException("등록되지 않은 사용자 입니다."));
         String pwd = member.getPwd();
-        //String auth = member.getAuth();
         String auth = member.getAuth().equals("0") ? "MEMBER" : "ADMIN";
 
         return User.builder().username(email).password(pwd).roles(auth).build();
