@@ -52,15 +52,15 @@ public class AuthControllerTest {
                 .andExpect(status().isForbidden());
     }
 
-    private Optional<Member> createAdminDTO(){
+    public Optional<Member> createAdminDTO(){
         return userRepository.findByEmail("admin@email.com");
     }
 
-    private Optional<Member> createMemberDTO(){
+    Optional<Member> createMemberDTO(){
         return userRepository.findByEmail("test@email.com");
     }
 
-    private String createToken(Member userDTO){
+    String createToken(Member userDTO){
         return jwtTokenProvider.createToken(userDTO.getEmail()
                 , userDTO.getAuth().equals("0")
                         ? Collections.singletonList(UserRole.ROLE_MEMBER)
