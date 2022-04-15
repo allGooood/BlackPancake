@@ -1,12 +1,9 @@
 package com.example.blackpancake.product.service;
 
-import com.example.blackpancake.product.domain.Category;
 import com.example.blackpancake.product.domain.Product;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 public interface ProductService {
     Product save(Product product) throws Exception;
-    //List<Product> listUpProducts() throws Exception;
+    Page<Product> findProducts(String category, int pno) throws Exception;
 }

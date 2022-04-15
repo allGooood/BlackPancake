@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -34,12 +35,6 @@ public class ProductControllerTest {
     CategoryRepository categoryRepository;
 
     @Test
-    void 상품목록조회_그리고_카테고리_선택시_해당하는_상품만_조회() throws Exception{
-        mockMvc.perform(get("/products?category=200")).andExpect(status().isOk());
-        mockMvc.perform(get("/products")).andExpect(status().isOk());
-    }
-
-    @Test
     void 조인(){
         //given
         Category category = new Category();
@@ -58,6 +53,20 @@ public class ProductControllerTest {
             System.out.println(Product);
             System.out.println(Product.getCategory());
         });
+    }
+
+    @Test
+    void 상품목록조회_그리고_카테고리_선택시_해당하는_상품만_조회() throws Exception{
+        mockMvc.perform(get("/products?category=200")).andExpect(status().isOk());
+        mockMvc.perform(get("/products")).andExpect(status().isOk());
+    }
+
+    @Test
+    @Transactional
+    void 상품목록_페이징() throws Exception {
+        mockMvc.perform(get("/products?page=1")).andExpect(status().isOk());
+        mockMvc.perform(get("/products?page=2")).andExpect(status().isOk());
+        mockMvc.perform(get("/products?page=1&category=200")).andExpect(status().isOk());
     }
 
     @Test

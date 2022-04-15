@@ -1,22 +1,22 @@
 package com.example.blackpancake.product.controller;
 
-import com.example.blackpancake.product.domain.Category;
 import com.example.blackpancake.product.domain.Product;
 import com.example.blackpancake.product.repository.CategoryRepository;
 import com.example.blackpancake.product.repository.ProductRepository;
-import com.example.blackpancake.product.service.ProductService;
 import com.example.blackpancake.product.service.impl.ProductServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class ProductController {
@@ -39,14 +39,8 @@ public class ProductController {
     }
 
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> listUpProducts(@RequestParam(value="category", required=false)String code){
-        List<Product> productList;
-        if(code != null){
-            Optional<Category> category = categoryRepository.findByCode(code);
-            productList = productRepository.findAllByCategory(category);
-        }else{
-            productList = productRepository.findAll();
-        }
+    public ResponseEntity<List<Product>> listUpProducts(@RequestParam(value="category", required=false)String code, @RequestParam(value="page", defaultValue = "1")int pno) throws Exception {
+        List<Product> productList = productService.findProducts(code, pno).getContent();
         return ResponseEntity.status(HttpStatus.OK).body(productList);
     }
 
