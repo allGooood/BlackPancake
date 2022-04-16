@@ -4,5 +4,5 @@ import com.example.blackpancake.user.domain.Member;
 import com.example.blackpancake.user.dto.JoinDTO;
 
 public interface UserService {
-    Member save(Member joinDTO) throws Exception;
+    Member save(JoinDTO joinDTO) throws Exception;
 }

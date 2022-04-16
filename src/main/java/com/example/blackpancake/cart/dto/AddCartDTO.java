@@ -14,7 +14,6 @@ import java.util.Optional;
 public class AddCartDTO {
     @Min(0)
     private int amount;
-    //private Member member;
     private Long productId;
 
     public Cart toEntity(Member member, Product product){

@@ -1,6 +1,7 @@
 package com.example.blackpancake.product.controller;
 
 import com.example.blackpancake.product.domain.Product;
+import com.example.blackpancake.product.dto.AddProductDTO;
 import com.example.blackpancake.product.repository.CategoryRepository;
 import com.example.blackpancake.product.repository.ProductRepository;
 import com.example.blackpancake.product.service.impl.ProductServiceImpl;
@@ -25,14 +26,14 @@ public class ProductController {
     private CategoryRepository categoryRepository;
 
     @PostMapping("/admin/product")
-    public ResponseEntity<String> save(@RequestBody Product product) throws Exception {
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                                                .path("{id}")
-                                                .buildAndExpand(product.getId())
-                                                .toUri();
-        product.setAdd_date(new Date());
+    public ResponseEntity<String> save(@RequestBody AddProductDTO product) throws Exception {
+//        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+//                                                .path("{id}")
+//                                                .buildAndExpand(product)
+//                                                .toUri();
+        //product.setAdd_date(new Date());
         Product result = productService.save(product);
-        return ResponseEntity.created(location).body(result.toString());
+        return ResponseEntity.status(HttpStatus.CREATED).body(result.toString());
     }
 
     @GetMapping("/products")
@@ -41,10 +42,4 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(productList);
     }
 
-//    @GetMapping("/products")
-//    public ResponseEntity<List<Product>> findByCategory(@RequestParam String category){
-//        System.out.println("category: "  + category);
-//        List<Product> productList = productRepository.findByCategory(new Category(category, ""));
-//        return ResponseEntity.status(HttpStatus.OK).body(productList);
-//    }
 }

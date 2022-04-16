@@ -1,6 +1,7 @@
 package com.example.blackpancake.user.domain;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import javax.persistence.Id;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 public class Member {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,14 +26,4 @@ public class Member {
     private String pwd;
     private String address;
     private String auth;
-
-    public Member(String email, String first_name, String last_name, String mobile, String pwd, String address, String auth) {
-        this.email = email;
-        this.first_name = first_name;
-        this.last_name = last_name;
-        this.mobile = mobile;
-        this.pwd = pwd;
-        this.address = address;
-        this.auth = auth;
-    }
 }
