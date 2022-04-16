@@ -51,12 +51,22 @@ public class JwtTokenProvider {
                 .compact();
     }
 
+//    public Authentication getAuthentication(String token){ //LoginPwdValidator 클래스사용 -> email, pwd, 권한정보 담음(UserDetails 객체)
+//        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserEmail(token));
+//        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+//    }
+
+    private String getUserEmail(String token) {
+        return Jwts.parserBuilder().setSigningKey(key).build()
+                .parseClaimsJws(token).getBody().getSubject();
+    }
+
     public Authentication getAuthentication(String token){ //LoginPwdValidator 클래스사용 -> email, pwd, 권한정보 담음(UserDetails 객체)
-        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserEmail(token));
+        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserId(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    private String getUserEmail(String token) {
+    public String getUserId(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build()
                 .parseClaimsJws(token).getBody().getSubject();
     }
