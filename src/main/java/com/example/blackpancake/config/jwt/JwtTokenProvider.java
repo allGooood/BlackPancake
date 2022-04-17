@@ -56,17 +56,17 @@ public class JwtTokenProvider {
 //        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
 //    }
 
-    private String getUserEmail(String token) {
-        return Jwts.parserBuilder().setSigningKey(key).build()
-                .parseClaimsJws(token).getBody().getSubject();
-    }
+//    private String getUserEmail(String token) {
+//        return Jwts.parserBuilder().setSigningKey(key).build()
+//                .parseClaimsJws(token).getBody().getSubject();
+//    }
 
     public Authentication getAuthentication(String token){ //LoginPwdValidator 클래스사용 -> email, pwd, 권한정보 담음(UserDetails 객체)
-        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserId(token));
+        UserDetails userDetails = userDetailsService.loadUserByUsername(getUserEmail(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    public String getUserId(String token) {
+    public String getUserEmail(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build()
                 .parseClaimsJws(token).getBody().getSubject();
     }

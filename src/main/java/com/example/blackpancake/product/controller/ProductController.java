@@ -8,12 +8,8 @@ import com.example.blackpancake.product.service.impl.ProductServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -41,5 +37,6 @@ public class ProductController {
         List<Product> productList = productService.findProducts(code, pno).getContent();
         return ResponseEntity.status(HttpStatus.OK).body(productList);
     }
+
 
 }
