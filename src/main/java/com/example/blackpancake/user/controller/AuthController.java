@@ -16,11 +16,13 @@ import java.util.Collections;
 
 @RestController
 public class AuthController {
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final JwtTokenProvider jwtTokenProvider;
 
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    public AuthController(UserRepository userRepository, JwtTokenProvider jwtTokenProvider) {
+        this.userRepository = userRepository;
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
 
     @PostMapping("/auth")
     public String auth(@RequestBody LoginDTO loginDto){

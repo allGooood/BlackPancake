@@ -6,7 +6,6 @@ import com.example.blackpancake.cart.dto.DeleteCartDTO;
 import com.example.blackpancake.cart.dto.EditCartDTO;
 import com.example.blackpancake.cart.service.CartService;
 import com.example.blackpancake.config.jwt.JwtTokenProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,10 +14,13 @@ import javax.validation.Valid;
 
 @RestController
 public class CartController {
-    @Autowired
-    private CartService cartService;
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    private final CartService cartService;
+    private final JwtTokenProvider jwtTokenProvider;
+
+    public CartController(CartService cartService, JwtTokenProvider jwtTokenProvider) {
+        this.cartService = cartService;
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
 
     @PostMapping("/member/carts")
     public ResponseEntity<String> save(@RequestHeader("X-AUTH-TOKEN") String jwt

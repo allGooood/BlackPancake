@@ -6,8 +6,11 @@ import com.example.blackpancake.product.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class CategoryServiceImpl implements CategoryService {
-    @Autowired
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
+
+    public CategoryServiceImpl(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
 
     @Override
     public Category save(Category category) throws Exception {

@@ -3,24 +3,23 @@ package com.example.blackpancake.user.controller;
 import com.example.blackpancake.user.domain.Member;
 import com.example.blackpancake.user.dto.JoinDTO;
 import com.example.blackpancake.user.service.impl.UserServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import java.net.URI;
 
 @RestController
 @Transactional
 public class UserController {
-    @Autowired
-    private UserServiceImpl userService;
+    private final UserServiceImpl userService;
 
-//    @PostMapping("/user")
+    public UserController(UserServiceImpl userService) {
+        this.userService = userService;
+    }
+
+    //    @PostMapping("/user")
 //    public ResponseEntity<String> join(@RequestBody Member joinDTO){
 //        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
 //                                                .path("{id}")

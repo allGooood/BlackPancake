@@ -3,17 +3,17 @@ package com.example.blackpancake.user.service.impl;
 import com.example.blackpancake.user.domain.Member;
 import com.example.blackpancake.user.dto.JoinDTO;
 import com.example.blackpancake.user.exception.EmailAlreadyExistsException;
-import com.example.blackpancake.user.exception.UserNotFoundException;
 import com.example.blackpancake.user.repository.UserRepository;
 import com.example.blackpancake.user.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService {
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public UserServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public Member save(JoinDTO joinDTO){
