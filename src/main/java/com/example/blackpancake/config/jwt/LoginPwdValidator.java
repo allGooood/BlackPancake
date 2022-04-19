@@ -16,8 +16,12 @@ import java.util.Optional;
 
 @Service
 public class LoginPwdValidator implements UserDetailsService {
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public LoginPwdValidator(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     //UserRepositoryImpl userRepository;
 
 //    @Bean
