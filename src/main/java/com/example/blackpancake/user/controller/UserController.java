@@ -2,6 +2,7 @@ package com.example.blackpancake.user.controller;
 
 import com.example.blackpancake.user.domain.Member;
 import com.example.blackpancake.user.dto.JoinDTO;
+import com.example.blackpancake.user.service.UserService;
 import com.example.blackpancake.user.service.impl.UserServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,11 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@Transactional
 public class UserController {
-    private final UserServiceImpl userService;
+    private final UserService userService;
 
-    public UserController(UserServiceImpl userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
@@ -32,7 +32,7 @@ public class UserController {
 //    }
 
     @PostMapping("/user")
-    public ResponseEntity<String> join(@RequestBody JoinDTO joinDTO){
+    public ResponseEntity<String> join(@RequestBody JoinDTO joinDTO) throws Exception {
 //        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
 //                .path("{email}")
 //                .buildAndExpand(joinDTO.getEmail())
