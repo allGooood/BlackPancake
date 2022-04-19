@@ -19,3 +19,29 @@ spring:
 
 jwt:
   secret: U0365K3ES3Q5F64G9O196I111PXA10Q2284E23I34J0SM22ZT8NY3Z7F0MTY03GXP20BVUIAGRGN2UQ728XPL81COD4AYLS1XJ6L4W84D3KH59R31DU0BPX40EQOGP79X7P3BS6F6E138WXCSY1EH8N2S0NZS9Z1AX4J87N9C8HAM710Z7X920U14M3FWW74I99SAONR
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: test
+
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=MySQL;
+    driver-class-name: org.h2.Driver
+    username: sa
+
+  h2:
+    console:
+      enabled: true
+
+  jpa:
+    database: h2
+#    generate-ddl: true
+    hibernate:
+      ddl-auto: create
+#    properties:
+#      hibernate:
+#        format_sql: true
+#    show-sql: true
