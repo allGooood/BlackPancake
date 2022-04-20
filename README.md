@@ -1,5 +1,5 @@
 # BlackPancake.
-#### 이전에 구현했던 일반 웹 애플리케이션 'PinkPancake'을 Restful API 서버로 바꾸는 프로젝트 입니다.
+#### 웹 애플리케이션 'PinkPancake'을 Restful API 서버로 바꾸는 프로젝트 입니다.
 
 목표.
 ----------
