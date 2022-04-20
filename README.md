@@ -20,12 +20,15 @@
 | auth | ☑️ | ☑️ | JWT 관련 클래스 구현(Token Provider, Filter), 로그인 |
 | users | ☑️ | ☑️ | 회원가입, 회원정보 조회/수정 |
 | products | ☑️ | ☑️ | 상품목록, 상품 상세조회, 상품 검색 |
-| carts | ☑️ | ☑️ | 장바구니 담기, 수량 변경, 상품 삭제 |
+| carts | ☑️ |  | 장바구니 담기, 수량 변경, 상품 삭제 |
 | orders |  |  | 상품 주문, 주문 취소, 주문 조회, 주문 상세조회 |
 | paging | ☑️ | ☑️ | Pageable을 구현한 페이징 사용 |
 | admin |  |  | 회원목록 조회(users), 상품 등록/수정/삭제(products)  |
 | Build & Deploy |  |  | Jenkins와 EC2를 사용한 빌드, 배포 자동화  |
 
-변경사항.
+변경 사항.
 ----------
-* JPA에서 Spring Data JPA로 변경
+* Test Class 세분화</br>
+    Controller 테스트에서 Controller, Service, Repository 로 나눈 단위 테스트 작성.
+* Test용 DB 분리
+    
