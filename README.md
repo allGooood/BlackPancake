@@ -26,9 +26,22 @@
 | admin |  |  | 회원목록 조회(users), 상품 등록/수정/삭제(products)  |
 | Build & Deploy |  |  | Jenkins와 EC2를 사용한 빌드, 배포 자동화  |
 
+ERD.
+----------
+![blackpancakes](https://user-images.githubusercontent.com/71624066/164154318-b7bb1a80-0a51-4df1-a59c-789c5f68ec87.png)
+
+
 변경 사항.
 ----------
 * Test Class 세분화</br>
     Controller 테스트에서 Controller, Service, Repository 로 나눈 단위 테스트 작성.
 * Test용 DB 분리
+
+Tech Stack.
+----------
+* Spring Boot 2.6.3
+* JDK 11
+* H2(Test, InMemory) + MySQL(운영)
+* Spring Data JPA
+* Gradle
     
