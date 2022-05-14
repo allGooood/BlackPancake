@@ -46,7 +46,7 @@ public class ProductServiceImpl implements ProductService {
         Page<Product> productList;
         Pageable paging = PageRequest.of(pno-1, 2, Sort.Direction.DESC, "id");
         if(categoryCode != null){
-            Optional<Category> category = categoryRepository.findByCode(categoryCode);
+            Category category = categoryRepository.findByCode(categoryCode).get();
             productList = productRepository.findAllByCategory(category, paging);
         }else{
             productList = productRepository.findAll(paging);
