@@ -6,11 +6,15 @@ import com.example.blackpancake.cart.dto.DeleteCartDTO;
 import com.example.blackpancake.cart.dto.EditCartDTO;
 import com.example.blackpancake.cart.service.CartService;
 import com.example.blackpancake.config.jwt.JwtTokenProvider;
+import com.example.blackpancake.order.domain.OrderDetail;
+import com.example.blackpancake.order.domain.Orders;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 public class CartController {
@@ -20,6 +24,14 @@ public class CartController {
     public CartController(CartService cartService, JwtTokenProvider jwtTokenProvider) {
         this.cartService = cartService;
         this.jwtTokenProvider = jwtTokenProvider;
+    }
+
+    @GetMapping("/member/carts")
+    public ResponseEntity<List<Cart>> findAll(@RequestHeader("X-AUTH-TOKEN") String jwt
+                                        , @RequestParam(value = "page", defaultValue = "1")int pno){
+        String memberEmail = jwtTokenProvider.getUserEmail(jwt);
+        List<Cart> cartList = cartService.findAllByMemberId(memberEmail, pno).getContent();
+        return ResponseEntity.status(HttpStatus.OK).body(cartList);
     }
 
     @PostMapping("/member/carts")
